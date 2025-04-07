@@ -36,7 +36,7 @@ class LocalStorage {
   void load() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final keys = prefs.getKeys();
+    final keys = prefs.getKeys().where((key) => key.startsWith(namespace));
     Map<String, ExperimentVariant> newMap = {};
 
     for (String key in keys) {
