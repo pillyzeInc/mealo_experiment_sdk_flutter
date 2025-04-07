@@ -17,9 +17,10 @@ class ExperimentClient {
   final ExperimentConfig? _config;
   final HttpClient _httpClient;
   final LocalStorage _localStorage;
+  final String apiKey;
 
   /// ExperimentClient constructor
-  ExperimentClient({required String apiKey, ExperimentConfig? config})
+  ExperimentClient({required this.apiKey, ExperimentConfig? config})
       : _config = config,
         _httpClient = HttpClient(
             apiKey: apiKey, shouldRetry: config?.retryFetchOnFailure),
@@ -70,9 +71,9 @@ class ExperimentClient {
         isFallback(source) &&
         exposureTrackerProvider != null &&
         variant == null) {
-      await exposureTrackerProvider.exposure(flagKey, null, instanceName);
+      await exposureTrackerProvider.exposure(flagKey, null, apiKey);
     } else if (variant != null && exposureTrackerProvider != null) {
-      await exposureTrackerProvider.exposure(flagKey, variant, instanceName);
+      await exposureTrackerProvider.exposure(flagKey, variant, apiKey);
     }
 
     _log(
