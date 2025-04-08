@@ -11,16 +11,14 @@ class LocalStorage {
   @protected
   Map<String, ExperimentVariant> map = {};
 
-  LocalStorage({required String apiKey}) : namespace = _getNamespace(apiKey) {
-    SharedPreferences.setPrefix(namespace);
-  }
+  LocalStorage({required String apiKey}) : namespace = _getNamespace(apiKey);
 
   void put(String key, ExperimentVariant value) {
-    map[key] = value;
+    map[namespace + key] = value;
   }
 
   ExperimentVariant? get(String key) {
-    final variant = map[key];
+    final variant = map[namespace + key];
 
     return variant;
   }
@@ -58,8 +56,7 @@ class LocalStorage {
 
   static _getNamespace(String apiKey) {
     final apiKeyToSubstring = apiKey.length > 6 ? apiKey : 'default-api-key';
-    String shortApiKey =
-        apiKeyToSubstring.substring(apiKeyToSubstring.length - 6);
+    String shortApiKey = apiKeyToSubstring.substring(apiKeyToSubstring.length - 6);
 
     return 'ampli-$shortApiKey';
   }
